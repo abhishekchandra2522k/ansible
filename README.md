@@ -35,5 +35,17 @@ Default inventory file - /etc/ansbile/hosts
 
 - $ `ansible web01 -m ping -i inventory` (This is an adhoc command to run ping module on the web01 host taken from the inventory file)
 
+2. $ `ansible webservers -m yum -a "name=httpd state=absent" -i inventory --become`
 
-2. $ `ansible webservers
+- General - $`ansible <host/group name> -m <module name> "<options>" -i <inventory file path> --become`
+- We use `--become` to execute the command on the target machine with sudo privileges.
+
+3. To execute a playbook -> $ `ansible-playbook -i inventory web-db.yml`
+
+4. To execute a playbook in the debug mode $ `ansible-playbook -i inventory web-db.yml -v` (add one more v for 2nd level of verbose mode)
+
+5. To execute a playbook in the debug mode with much more info (3rd level verbose) $ `ansible-playbook -i inventory web-db.yml -vvv`, we can add one more v (4th level - final verbose).
+
+6. To check the playbook syntax - $ `ansible-playbook -i inventory web-db.yml --syntax-check`
+
+7. To dry run the playbook - $ `ansible-playbook -i inventory web-db.yml -C`
