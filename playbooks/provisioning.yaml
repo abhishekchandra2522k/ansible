@@ -1,0 +1,87 @@
+---
+- name: Provisioning Servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install NTP agent on centos # ntp is a network time protocol server to distribute accurate time to clients on a network, allowing computers and other devices to maintain consistent and accurate time across a network for applications requiring precise timekeeping, such as financial transactions and logging.
+      yum:
+        name: '{{item}}'
+        state: present
+      when: ansible_distribution == "CentOS"
+      loop: # loop is going to return the value in item var by default
+        - chrony
+        - wget
+        - git
+        - zip
+        - unzip
+
+    - name: Install NTP agent on ubuntu
+      apt:
+        name: '{{item}}'
+        state: present
+        update_cache: yes # first runs apt update and then apt install
+      when: ansible_distribution == "Ubuntu"
+      loop: # loop is going to return the value in item var by default
+        - ntp
+        - wget
+        - git
+        - zip
+        - unzip
+
+    - name: Start service on centos
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: Start service on ubuntu
+      service:
+        name: ntp
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Banner file
+      copy:
+        content: '# This server is managed by Ansible. No Manual changes please'
+        dest: /etc/motd # this is a linux banner file, whenever we login whatever content is in this file it will print that
+
+    # Updating the configuration files for NTP on the centos and ubuntu webservers
+
+    - name: Deploy ntp agent conf on centos
+      template:
+        src: templates/ntpconf_centos
+        dest: /etc/chrony.conf
+        backup: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: Deploy ntp agent conf on ubuntu
+      template:
+        src: templates/ntpconf_ubuntu
+        dest: /etc/ntp.conf
+        backup: yes
+      when: ansible_distribution == "Ubuntu"
+
+    # restarting the service after updating the configuration files for ntp (not to perform everytime)
+    # we are going to use handlers to not restart the service everytime the playbook is executed
+
+    - name: Restart service on centos
+      service:
+        name: chronyd
+        state: restarted
+        enabled: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: Restart service on ubuntu
+      service:
+        name: ntp
+        state: restarted
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+    # more file tasks
+    - name: Create a folder
+      file:
+        path: /opt/test2
+        state: directory

@@ -1,11 +1,14 @@
 all:
   hosts:
     web01:
-      ansible_hosts: 172.31.26.204
+      ansible_host: 172.31.26.204
     web02:
-      ansible_hosts: 172.31.26.205
+      ansible_host: 172.31.26.205
+    web03:
+      ansible_host: 172.31.26.206
+      ansible_user: ubuntu # using host variable to override the global var value of ec2-user
     db01:
-      ansible_hosts: 172.31.26.206
+      ansible_host: 172.31.26.206
 
   children:
     webservers:

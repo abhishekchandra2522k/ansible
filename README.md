@@ -49,3 +49,15 @@ Default inventory file - /etc/ansbile/hosts
 6. To check the playbook syntax - $ `ansible-playbook -i inventory web-db.yml --syntax-check`
 
 7. To dry run the playbook - $ `ansible-playbook -i inventory web-db.yml -C` - It's a good practice to run a dry run before the final execution of the playbook.
+
+8. To pass variables via cmd line - $ `ansible-playbook -e USRNM=cliuser -e COMM=cliuser vars_precedence.yaml` - the vars passed in the cmd line have the highest priority
+
+### Some Important Ansible informational points
+
+1. Add `gather_facts: False` to disable the [Gathering Facts] tasks where the fact variables are initialized.
+
+2. $ `ansible -m setup web01` - to see the fact variables value for web01 machine.
+
+3. Copy Module vs Template module in Ansible
+  - copy module takes the file and directly dumps in the target location.
+  - template module is intelligent, it will read the file, if we have any Jinja2 template, what's Jinja2 template? the structure that we use, variables "{{<var_name>}}", conditions `when:`, loops `loop:` this is Jinja2 templating. Template module is going to look for any templating that we may have done, and then from that extract the actual content and push it to the target location. basically it will fetch the values of the vars...

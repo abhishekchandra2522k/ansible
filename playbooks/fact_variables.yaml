@@ -1,0 +1,17 @@
+---
+- name: Print fact variables
+  hosts: all
+  #gather_facts: False # to be used to disable running the gathering facts tasks and the setup module
+  tasks:
+    - name: Print OS name
+      debug:
+        var: ansible_distribution
+    - name: Print selinux mode
+      debug:
+        var: ansible_selinux.mode
+    - name: Print RAM
+      debug:
+        var: ansible_memory_mb.real.free
+    - name: Print processor name
+      debug:
+        var: ansbile_processor[2]
