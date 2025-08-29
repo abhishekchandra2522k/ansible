@@ -48,4 +48,4 @@ Default inventory file - /etc/ansbile/hosts
 
 6. To check the playbook syntax - $ `ansible-playbook -i inventory web-db.yml --syntax-check`
 
-7. To dry run the playbook - $ `ansible-playbook -i inventory web-db.yml -C`
+7. To dry run the playbook - $ `ansible-playbook -i inventory web-db.yml -C` - It's a good practice to run a dry run before the final execution of the playbook.
