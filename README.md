@@ -61,3 +61,7 @@ Default inventory file - /etc/ansbile/hosts
 3. Copy Module vs Template module in Ansible
   - copy module takes the file and directly dumps in the target location.
   - template module is intelligent, it will read the file, if we have any Jinja2 template, what's Jinja2 template? the structure that we use, variables "{{<var_name>}}", conditions `when:`, loops `loop:` this is Jinja2 templating. Template module is going to look for any templating that we may have done, and then from that extract the actual content and push it to the target location. basically it will fetch the values of the vars...
+
+4. $ `sudo apt install tree -y` - install tree module to see the dir structure in a tree format - $ `tree <dir-path>`
+
+5. $ `ansible-galaxy init post-install` -- Role post install created successfully...

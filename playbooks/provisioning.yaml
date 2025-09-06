@@ -2,6 +2,8 @@
 - name: Provisioning Servers
   hosts: all
   become: yes
+  vars:
+    mydir1: /opt/dir1
   tasks:
     - name: Install NTP agent on centos # ntp is a network time protocol server to distribute accurate time to clients on a network, allowing computers and other devices to maintain consistent and accurate time across a network for applications requiring precise timekeeping, such as financial transactions and logging.
       yum:
@@ -47,7 +49,16 @@
         content: '# This server is managed by Ansible. No Manual changes please'
         dest: /etc/motd # this is a linux banner file, whenever we login whatever content is in this file it will print that
 
+    # more file tasks
+    - name: Create a folder
+      file:
+        path: '{{mydir}}'
+        state: directory
+
     # Updating the configuration files for NTP on the centos and ubuntu webservers
+    # Copy Module vs Template module in Ansible
+    # - copy module takes the file and directly dumps in the target location.
+    # - template module is intelligent, it will read the file, if we have any Jinja2 template, what's Jinja2 template? the structure that we use, variables "{{<var_name>}}", conditions `when:`, loops `loop:` this is Jinja2 templating. Template module is going to look for any templating that we may have done, and then from that extract the actual content and push it to the target location. basically it will fetch the values of the vars...
 
     - name: Deploy ntp agent conf on centos
       template:
@@ -55,6 +66,8 @@
         dest: /etc/chrony.conf
         backup: yes
       when: ansible_distribution == "CentOS"
+      notify:
+        - Restart service on centos
 
     - name: Deploy ntp agent conf on ubuntu
       template:
@@ -62,10 +75,19 @@
         dest: /etc/ntp.conf
         backup: yes
       when: ansible_distribution == "Ubuntu"
+      notify:
+        - Restart service on ubuntu
+
+    - name: Dump file
+      copy:
+        src: files/myfile.txt
+        dest: /tmp/myfile.txt
 
     # restarting the service after updating the configuration files for ntp (not to perform everytime)
     # we are going to use handlers to not restart the service everytime the playbook is executed
+    # we can use 'when' conditional as well but ansible gives a better way by using handlers to perform the above task
 
+  handlers:
     - name: Restart service on centos
       service:
         name: chronyd
@@ -79,9 +101,3 @@
         state: restarted
         enabled: yes
       when: ansible_distribution == "Ubuntu"
-
-    # more file tasks
-    - name: Create a folder
-      file:
-        path: /opt/test2
-        state: directory
