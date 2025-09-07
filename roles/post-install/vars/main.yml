@@ -1,0 +1,13 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for post-install
+dbname: sky
+dbuser: pilot
+dbpass: aircraft
+USRNM: commonuser
+COMM: variable from group_vars/all file
+ntp0: 0.north-america.pool.ntp.org
+ntp1: 1.north-america.pool.ntp.org
+ntp2: 2.north-america.pool.ntp.org
+ntp3: 3.north-america.pool.ntp.org
+mydir1: /opt/dir1

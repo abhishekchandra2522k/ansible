@@ -1,0 +1,38 @@
+# example ntp config file from google (not from real ubuntu aws machine, location - /etc/ntp.conf)
+
+# /etc/ntp.conf - NTP configuration file for Ubuntu
+
+# Specify the NTP pool servers to use
+# These are public servers that provide synchronized time
+# Replace '0.ubuntu.pool.ntp.org' with a server closer to your location if desired
+server "{{ntp0}}" iburst
+server "{{ntp1}}" iburst
+server "{{ntp2}}" iburst
+server "{{ntp3}}" iburst
+
+# Optional: Add local clock as a fallback if no external servers are available
+# This should only be used as a last resort and if you understand the implications
+# fudge 127.127.1.0 stratum 10
+# server 127.127.1.0 prefer
+
+# Drift file: This file records the frequency offset of the local clock
+# It helps ntpd compensate for clock drift when external servers are unavailable
+driftfile /var/lib/ntp/ntp.drift
+
+# Statistics directory: Optional, for logging NTP statistics
+# statsdir /var/log/ntpstats/
+
+# Logging: Where to write log messages
+# logfile /var/log/ntp.log
+
+# Access control: Restrict access to the NTP service
+# By default, allow queries from localhost
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+
+# Allow full access from localhost
+restrict 127.0.0.1
+restrict -6 ::1
+
+# Optional: Allow specific subnets to query the NTP server (if acting as a server)
+# restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap

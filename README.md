@@ -59,9 +59,14 @@ Default inventory file - /etc/ansbile/hosts
 2. $ `ansible -m setup web01` - to see the fact variables value for web01 machine.
 
 3. Copy Module vs Template module in Ansible
-  - copy module takes the file and directly dumps in the target location.
-  - template module is intelligent, it will read the file, if we have any Jinja2 template, what's Jinja2 template? the structure that we use, variables "{{<var_name>}}", conditions `when:`, loops `loop:` this is Jinja2 templating. Template module is going to look for any templating that we may have done, and then from that extract the actual content and push it to the target location. basically it will fetch the values of the vars...
+
+- copy module takes the file and directly dumps in the target location.
+- template module is intelligent, it will read the file, if we have any Jinja2 template, what's Jinja2 template? the structure that we use, variables "{{<var_name>}}", conditions `when:`, loops `loop:` this is Jinja2 templating. Template module is going to look for any templating that we may have done, and then from that extract the actual content and push it to the target location. basically it will fetch the values of the vars...
 
 4. $ `sudo apt install tree -y` - install tree module to see the dir structure in a tree format - $ `tree <dir-path>`
 
-5. $ `ansible-galaxy init post-install` -- Role post install created successfully...
+5. $ `ansible-galaxy init post-install` -- To create a new role (module as in terraform) - "post-install" will be created...
+
+6. Use Ansible Galaxy documentation to use public built roles for various tasks - for example installing java on the system, we can use $ `ansible-galaxy install geerlingguy.java`, this will help download the java role contents into our directory
+
+7. vim editor tip: `:%s/^<space><space><space>//` replace 3 spaces with nothing -- to remove the unnecessary indentation.
